@@ -14,8 +14,8 @@ c_pattern="$(openssl rand -hex 8)"
 mkdir -p $anigo_dir
 
 # Create plugin map if it doesn't exist
-if [ ! -f $config_path ]; then
-    curl -s https://raw.githubusercontent.com/FlamesX-128/test/main/plugins.map -o $config_path
+if [ ! -f $plugin_map ]; then
+    curl -s https://raw.githubusercontent.com/FlamesX-128/test/main/plugins.map -o $plugin_map
 fi
 
 # Install plugins
