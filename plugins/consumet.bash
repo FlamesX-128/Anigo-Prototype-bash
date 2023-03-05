@@ -1,14 +1,19 @@
 #!/bin/bash
 
-#
+# controller search universal
 consumet_cs-universal() {
     local consumet_url="https://api.consumet.org/anime/$1"
 
-    local keyword=$(gum input --placeholder 'Enter anime name' | tr ' ' '-')
+    local keyword=$(gum input --placeholder 'Enter anime name' | tr ' ' '+')
     local resp=$(curl -s "$consumet_url/$keyword")
 
-    local titles=$(echo "$resp" | jq -r '.results[] | .title')
+    local titles=$(printf "$resp" | jq -r '.results[] | .title')
     local data=()
+
+    if [[ $titles == "" ]]; then
+        printf '%s\n' "No animes found."
+        exit 1
+    fi
 
     while read -r line; do
         data+=("$line")
@@ -19,15 +24,13 @@ consumet_cs-universal() {
         exit 1
     fi
 
-    sleep 3
-
     local title=$(gum choose "${data[@]}")
 
     echo "$resp" |
         jq -r ".results[] | select(.title == \"$title\") | .id"
 }
 
-#
+# controller episode universal
 consumet_ce-universal() {
     local consumet_url="https://api.consumet.org/anime/$1/info/$2"
     local resp=$(curl -s "$consumet_url")
@@ -45,7 +48,7 @@ consumet_ce-universal() {
         jq -r ".episodes[] | select(.number == $episode) | .id"
 }
 
-#
+# controller watch universal
 consumet_cw-universal() {
     local consumet_url="https://api.consumet.org/anime/$1/watch/$2"
     local resp=$(curl -s "$consumet_url")
@@ -53,12 +56,17 @@ consumet_cw-universal() {
     local sources=$(echo "$resp" | jq -r '.sources[] | .quality')
     local data=()
 
+    if [[ $sources == "" ]]; then
+        printf '%s\n' "No sources found."
+        exit 1
+    fi
+
     while read -r line; do
         data+=("$line")
     done <<<"$sources"
 
     if [ ${#data[@]} -eq 0 ]; then
-        printf '%s\n' "No animes found."
+        printf '%s\n' "No sources found."
         exit 1
     fi
 
@@ -70,29 +78,59 @@ consumet_cw-universal() {
 
 # __CONTROLLER__ 9anime
 consumet_c-9anime() {
-    consumet_cw-universal '9anime' "$(
-        consumet_ce-universal '9anime' "$(
-            consumet_cs-universal '9anime'
-        )"
-    )"
+    anime_id=$(consumet_cs-universal '9anime')
+
+    if [ "$anime_id" == "" ]; then
+        printf '%s\n' "No anime id returned."
+        exit 1
+    fi
+
+    episode_id=$(consumet_ce-universal '9anime' "$anime_id")
+
+    if [ "$episode_id" == "" ]; then
+        printf '%s\n' "No episode id returned."
+        exit 1
+    fi
+
+    consumet_cw-universal '9anime' "$episode_id"
 }
 
 # __CONTROLLER__ gogoanime
 consumet_c-gogoanime() {
-    consumet_cw-universal 'gogoanime' "$(
-        consumet_ce-universal 'gogoanime' "$(
-            consumet_cs-universal 'gogoanime'
-        )"
-    )"
+    anime_id=$(consumet_cs-universal 'gogoanime')
+
+    if [ "$anime_id" == "" ]; then
+        printf '%s\n' "No anime id returned."
+        exit 1
+    fi
+
+    episode_id=$(consumet_ce-universal 'gogoanime' "$anime_id")
+
+    if [ "$episode_id" == "" ]; then
+        printf '%s\n' "No episode id returned."
+        exit 1
+    fi
+
+    consumet_cw-universal 'gogoanime' "$episode_id"
 }
 
 # __CONTROLLER__ animepahe
 consumet_c-animepahe() {
-    consumet_cw-universal 'animepahe' "$(
-        consumet_ce-universal 'animepahe' "$(
-            consumet_cs-universal 'animepahe'
-        )"
-    )"
+    anime_id=$(consumet_cs-universal 'animepahe')
+
+    if [ "$anime_id" == "" ]; then
+        printf '%s\n' "No anime id returned."
+        exit 1
+    fi
+
+    episode_id=$(consumet_ce-universal 'animepahe' "$anime_id")
+
+    if [ "$episode_id" == "" ]; then
+        printf '%s\n' "No episode id returned."
+        exit 1
+    fi
+
+    consumet_cw-universal 'animepahe' "$episode_id"
 }
 
 # Initialize the plugin

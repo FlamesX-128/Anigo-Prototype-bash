@@ -48,7 +48,7 @@ LoadPlugin() {
 
 # ---
 Init() {
-    if [ ! -f $plug_map ]; then
+    if [ ! -f $conf_dir ]; then
         InstallPluginMap
     fi
 
@@ -93,21 +93,21 @@ Main() {
     local resp=$(gum choose "${controllers[@]}")
     local resp="${resp//:/\:controller:}"
 
-    url=$(eval ${components[$resp]})
+    url=$(${components[$resp]})
 
-    if [ -z $url ]; then
+    if [ "$url" == "" ]; then
         printf '%s\n' "No url found."
         exit 1
     fi
 
     cmd=$(jq -r '.watch' "$conf_dir")
 
-    if [ -z $cmd ]; then
+    if [ "$cmd" == "" ]; then
         printf '%s\n' "No watch command found."
         exit 1
     fi
 
-    eval $cmd $url
+    eval "$cmd $url"
 }
 
 # ---

@@ -1,5 +1,5 @@
 {
-    "watch-command": "mpv",
+    "watch": "mpv",
     "plugins": [
         "https://raw.githubusercontent.com/FlamesX-128/test/main/plugins/consumet.bash"
     ]
