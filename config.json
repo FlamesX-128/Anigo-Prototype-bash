@@ -1,6 +1,6 @@
 {
     "watch": "mpv",
     "plugins": [
-        "https://raw.githubusercontent.com/FlamesX-128/test/main/plugins/consumet.bash"
+        "https://raw.githubusercontent.com/FlamesX-128/Anigo-Prototype-bash/main/plugins/consumet.bash"
     ]
 }
