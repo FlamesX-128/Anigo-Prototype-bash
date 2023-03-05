@@ -11,8 +11,6 @@ plug_dir='anigo/plugins'
 
 # ---
 InstallPluginMap() {
-    mkdir -p anigo
-
     gum spin -s minidot --title 'Downloading plugin map...' -- \
         curl -s "$plug_uri" -o "$conf_dir"
 }
@@ -44,12 +42,14 @@ LoadPlugin() {
 
     printf 'Loading plugin %s \n' "$1"
 
-    eval source "$1"
+    eval "source $1"
     __INIT__
 }
 
 # ---
 Init() {
+    mkdir -p $plug_dir
+
     if [ ! -f $conf_dir ]; then
         InstallPluginMap
     fi
