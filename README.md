@@ -10,30 +10,30 @@
 ---
 
 <div align="center">
-    <img src="https://github.com/FlamesX-128/anigo/blob/main/assets/image.png" height="200" />
+    <img src="https://github.com/FlamesX-128/Anigo-Prototype-bash/blob/main/assets/image.png" height="200" />
 </div>
 
 ---
 
 <div align="center">
     <p>
-        <a href="https://github.com/FlamesX-128/anigo/graphs/contributors">
-            <img src="https://img.shields.io/github/contributors/FlamesX-128/anigo" alt="contributors" />
+        <a href="https://github.com/FlamesX-128/Anigo-Prototype-bash/graphs/contributors">
+            <img src="https://img.shields.io/github/contributors/FlamesX-128/Anigo-Prototype-bash" alt="contributors" />
         </a>
         <a href="">
-            <img src="https://img.shields.io/github/last-commit/FlamesX-128/anigo" alt="last update" />
+            <img src="https://img.shields.io/github/last-commit/FlamesX-128/Anigo-Prototype-bash" alt="last update" />
         </a>
-        <a href="https://github.com/FlamesX-128/anigo/network/members">
-            <img src="https://img.shields.io/github/forks/FlamesX-128/anigo" alt="forks" />
+        <a href="https://github.com/FlamesX-128/Anigo-Prototype-bash/network/members">
+            <img src="https://img.shields.io/github/forks/FlamesX-128/Anigo-Prototype-bash" alt="forks" />
         </a>
-        <a href="https://github.com/FlamesX-128/anigo/stargazers">
-            <img src="https://img.shields.io/github/stars/FlamesX-128/anigo" alt="stars" />
+        <a href="https://github.com/FlamesX-128/Anigo-Prototype-bash/stargazers">
+            <img src="https://img.shields.io/github/stars/FlamesX-128/Anigo-Prototype-bash" alt="stars" />
         </a>
-        <a href="https://github.com/FlamesX-128/anigo/issues/">
-            <img src="https://img.shields.io/github/issues/FlamesX-128/anigo" alt="open issues" />
+        <a href="https://github.com/FlamesX-128/Anigo-Prototype-bash/issues/">
+            <img src="https://img.shields.io/github/issues/FlamesX-128/Anigo-Prototype-bash" alt="open issues" />
         </a>
-        <a href="https://github.com/FlamesX-128/anigo/blob/master/LICENSE">
-            <img src="https://img.shields.io/github/license/FlamesX-128/anigo.svg" alt="license" />
+        <a href="https://github.com/FlamesX-128/Anigo-Prototype-bash/blob/master/LICENSE">
+            <img src="https://img.shields.io/github/license/FlamesX-128/Anigo-Prototype-bash.svg" alt="license" />
         </a>
     </p>
 </div>
