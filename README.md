@@ -32,7 +32,7 @@
         <a href="https://github.com/FlamesX-128/Anigo-Prototype-bash/issues/">
             <img src="https://img.shields.io/github/issues/FlamesX-128/Anigo-Prototype-bash" alt="open issues" />
         </a>
-        <a href="https://github.com/FlamesX-128/Anigo-Prototype-bash/blob/master/LICENSE">
+        <a href="https://github.com/FlamesX-128/Anigo-Prototype-bash/blob/main/LICENSE">
             <img src="https://img.shields.io/github/license/FlamesX-128/Anigo-Prototype-bash.svg" alt="license" />
         </a>
     </p>
@@ -45,7 +45,7 @@
 ### Using curl
 
 ```bash
-curl https://raw.githubusercontent.com/FlamesX-128/test/main/anigo.bash -o anigo.bash
+curl https://raw.githubusercontent.com/FlamesX-128/Anigo-Prototype-bash/main/anigo.bash -o anigo.bash
 ```
 
 ## Plugin directory
