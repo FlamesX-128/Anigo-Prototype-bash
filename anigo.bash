@@ -1,76 +1,116 @@
-#!/bin/bash
+#! /bin/bash
 
 # Global variables
-declare -a s_controllers
 declare -A components
 
-plugin_map='anigo/plugins.map'
-anigo_dir='anigo/plugins'
+#
+plug_uri='https://raw.githubusercontent.com/FlamesX-128/test/main/config.json'
 
-# Symbol Pattern
-c_pattern="$(openssl rand -hex 8)"
+conf_dir='anigo/config.json'
+plug_dir='anigo/plugins'
 
-# Create directory if it doesn't exist
-mkdir -p $anigo_dir
+# ---
+InstallPluginMap() {
+    gum spin -s minidot --title 'Downloading plugin map...' -- \
+        curl -s "$plug_uri" -o "$conf_dir"
+}
 
-# Create plugin map if it doesn't exist
-if [ ! -f $plugin_map ]; then
-    curl -s https://raw.githubusercontent.com/FlamesX-128/test/main/plugins.map -o $plugin_map
-fi
+ReadPluginMap() {
+    jq -r '.plugins[]' "$conf_dir"
+}
 
-# Install plugins
-while read url; do
-    if test -f $anigo_dir/$(basename $url); then
-        printf 'Plugin %s already installed \n' "$url"
-        continue
+# ---
+InstallPlugin() {
+    local base=$(basename $1)
+
+    gum spin -s minidot --title "Downloading plugin \"$base\" ..." -- \
+        curl -s "$1" -o "$plug_dir/$base"
+
+    chmod +x "$plug_dir/$base"
+}
+
+# ---
+LoadPlugin() {
+    local base=$(basename $1)
+
+    if [[ $entry != *.bash && $entry != *.sh ]]; then
+        return
     fi
 
-    printf 'Installing plugin %s \n' "$url"
+    #gum spin -s minidot --title "Loading plugin \"$base\"" -- \
+    #    source "$1" && __INIT__
 
-    curl -s $url -o $anigo_dir/$(basename $url)
-    chmod +x $anigo_dir/$(basename $url)
-done < <(jq -r '.[]' $plugin_map)
+    printf 'Loading plugin %s \n' "$1"
 
-# Load plugins
-for entry in $anigo_dir/*; do
-    if [[ $entry != *.bash ]]; then
-        continue
+    eval source "$1"
+    __INIT__
+}
+
+# ---
+Init() {
+    if [ ! -f $plug_map ]; then
+        InstallPluginMap
     fi
 
-    printf 'Loading plugin %s \n' "$entry"
-    source "$entry"
+    while read url; do
+        if test -f $plug_dir/$(basename $url); then
+            continue
+        fi
 
-    __INIT__ "$(openssl rand -hex 8)"
-done
+        InstallPlugin $url
+    done < <(ReadPluginMap)
 
+    for entry in $plug_dir/*; do
+        LoadPlugin $entry
+    done
+}
 
-while true; do
-    # Get controllers
+# ---
+Main() {
+    local -a controllers=()
+    local -a filtered=()
+
+    # Filter components
     for key in "${!components[@]}"; do
         if [[ $key == *"controller"* ]]; then
-            s_controllers+=("$key")
+            filtered+=("${key}")
         fi
     done
 
-    # Print controllers
-    for i in "${!s_controllers[@]}"; do
-        printf '%s \n' "> $i: ${s_controllers[$i]:28}"
+    for key in "${filtered[@]}"; do
+        local name=$(printf "$key" |  sed -E 's/controller:(.*)/\1/')
+
+        controllers+=(
+            $(printf "$key " |  sed -E 's/controller:(.*)/\1/')
+        )
     done
 
+    if [ ${#controllers[@]} -eq 0 ]; then
+        printf '%s\n' "No controllers found."
+        exit 1
+    fi
 
-    # Select controller
-    while true; do
-        read -p "Select a controller: " controller
+    local resp=$(gum choose "${controllers[@]}")
+    local resp="${resp//:/\:controller:}"
 
-        if [[ $controller =~ ^[0-9]+$ ]]; then
-            if [[ $controller -ge 0 && $controller -lt ${#s_controllers[@]} ]]; then
-                break
-            fi
-        fi
+    url=$(eval ${components[$resp]})
 
-        printf 'Invalid input \n'
-    done
+    if [ -z $url ]; then
+        printf '%s\n' "No url found."
+        exit 1
+    fi
 
-    # Call controller
-    ${components[${s_controllers[$controller]}]} "$@"
-done
+    cmd=$(jq -r '.watch' "$conf_dir")
+
+    if [ -z $cmd ]; then
+        printf '%s\n' "No watch command found."
+        exit 1
+    fi
+
+    eval $cmd $url
+}
+
+# ---
+
+Init
+Main
