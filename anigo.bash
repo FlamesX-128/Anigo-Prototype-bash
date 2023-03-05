@@ -4,7 +4,7 @@
 declare -A components
 
 #
-plug_uri='https://raw.githubusercontent.com/FlamesX-128/test/main/config.json'
+plug_uri='https://raw.githubusercontent.com/FlamesX-128/Anigo-Prototype-bash/main/config.json'
 
 conf_dir='anigo/config.json'
 plug_dir='anigo/plugins'
