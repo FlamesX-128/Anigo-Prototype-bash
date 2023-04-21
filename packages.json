@@ -1,3 +1,5 @@
 [
-    { "name": "consumet", "url": "", "security": "official" }
+    { "id": "consumet", "url": "", "security": "official" },
+    { "id": "monochinos2", "url": "", "security": "official" },
+    { "id": "9anune", "url": "", "security": "community" }
 ]
